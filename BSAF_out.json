@@ -1,0 +1,88 @@
+{
+    "BSAF_out": [
+        {
+            "stationID": 100001,
+            "seqNumber": 1001,
+            "EmV_current_longitude": 11.50864,
+            "EmV_current_latitude": 47.00898,
+            "Destination_longitude": 47.0220269,
+            "Destination_latitude": 11.5023193,
+            "Destination_altitude": 200,
+            "ETA": 0,
+            "relevanceDistance": 3,
+            "speed": 22,
+            "heading": 1000,
+            "dissemination_area": 0
+        },
+        {
+            "stationID": 100002,
+            "seqNumber": 2002,
+            "EmV_current_longitude": 11.50864,
+            "EmV_current_latitude": 47.00898,
+            "Destination_longitude": 47.0220269,
+            "Destination_latitude": 11.5023193,
+            "Destination_altitude": 200,
+            "ETA": 0,
+            "relevanceDistance": 3,
+            "speed": 22,
+            "heading": 1000,
+            "dissemination_area": 1
+        },
+        {
+            "stationID": 100003,
+            "seqNumber": 3003,
+            "EmV_current_longitude": 11.50864,
+            "EmV_current_latitude": 47.00898,
+            "Destination_longitude": 47.0220269,
+            "Destination_latitude": 11.5023193,
+            "Destination_altitude": 200,
+            "ETA": 0,
+            "relevanceDistance": 3,
+            "speed": 22,
+            "heading": 1000,
+            "dissemination_area": 2
+        },
+        {
+            "stationID": 100004,
+            "seqNumber": 4004,
+            "EmV_current_longitude": 11.50864,
+            "EmV_current_latitude": 47.00898,
+            "Destination_longitude": 47.0220269,
+            "Destination_latitude": 11.5023193,
+            "Destination_altitude": 200,
+            "ETA": 2,
+            "relevanceDistance": 3,
+            "speed": 22,
+            "heading": 1000,
+            "dissemination_area": 3
+        },
+        {
+            "stationID": 100005,
+            "seqNumber": 5005,
+            "EmV_current_longitude": 11.50864,
+            "EmV_current_latitude": 47.00898,
+            "Destination_longitude": 47.0220269,
+            "Destination_latitude": 11.5023193,
+            "Destination_altitude": 200,
+            "ETA": 14,
+            "relevanceDistance": 3,
+            "speed": 22,
+            "heading": 1000,
+            "dissemination_area": 4
+        },
+        {
+            "stationID": 100006,
+            "seqNumber": 6006,
+            "EmV_current_longitude": 11.50864,
+            "EmV_current_latitude": 47.00898,
+            "Destination_longitude": 47.0220269,
+            "Destination_latitude": 11.5023193,
+            "Destination_altitude": 200,
+            "ETA": 43,
+            "relevanceDistance": 3,
+            "speed": 22,
+            "heading": 1000,
+            "dissemination_area": 5
+        }
+    ]
+}

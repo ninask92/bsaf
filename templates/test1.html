@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+   <head>
+      <title>BSAF app</title>
+      <meta http-equiv="refresh" content="1" >
+      <style>
+      #bsaf_elements {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+         }
+
+      #bsaf_elements td, #bsaf_elements th {
+      border: 1px solid #ddd;
+      padding: 8px;
+      }
+
+      #bsaf_elements tr:nth-child(even){background-color: #d9e4dd;}
+
+      #bsaf_elements tr:hover {background-color: #ddd;}
+
+      #bsaf_elements th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #1c2b2d;
+      color: white;
+         }
+
+      .centerImage {
+         display: block;
+         margin-left: auto;
+         margin-right: auto;
+      }
+      .myclass {
+  width: 20%;
+  white-space: nowrap;
+margin-left: auto;
+         margin-right: auto;
+         text-align: center;
+}
+      table {
+border-collapse: collapse;
+border: 1px solid gray;
+width: 50%;
+float: left;
+margin:5px;
+}
+      </style>
+   </head>
+
+   <body>
+       <center><img src="https://svgur.com/i/R1z.svg" class="center" width="500"></center>
+      <table border = "1">
+      <table id="bsaf_elements">
+         <tr>
+            <th style="text-align:center">EmV speed (m/s)</th>
+            <th style="text-align:center">EmV location (latitude, longitude)</td>
+            <th style="text-align:center">EmV destination (latitude, longitude)</td>
+         </tr>
+
+         <tr>
+            <td>{{speed_input}}</td>
+            <td>{{location_latitude_input}}, {{location_longitude_input}}</td>
+            <td>{{destination_latitude_input}}, {{destination_longitude_input}}</td>
+         </tr>
+      </table>
+
+            <table id="bsaf_elements">
+         <tr>
+            <th style="text-align:center">Dissemination area</th>
+            <th style="text-align:center">Center (latitude, longitude)</th>
+            <th style="text-align:center">Estimated Time of Arrival (s)</th>
+            <th style="text-align:center">Country</th>
+         </tr>
+         <tr>
+            <td>Area 1</td>
+            <td>46.9917970, 11.4989080</td>
+            <td>{{eta1_input}}</td>
+            <td class="myclass"><img src="https://upload.wikimedia.org/wikipedia/en/0/03/Flag_of_Italy.svg" width="30" height="30"></td>
+         </tr>
+         <tr>
+            <td>Area 2</td>
+            <td>46.9969320, 11.5030600</td>
+            <td>{{eta2_input}}</td>
+            <td class="myclass"><img src="https://upload.wikimedia.org/wikipedia/en/0/03/Flag_of_Italy.svg" width="30" height="30"></td>
+         </tr>
+         <tr>
+            <td>Area 3</td>
+            <td>47.0022330, 11.5070870</td>
+            <td>{{eta3_input}}</td>
+            <td class="myclass"><img src="https://upload.wikimedia.org/wikipedia/en/0/03/Flag_of_Italy.svg" width="30" height="30"></td>
+         </tr>
+         <tr>
+            <td>Area 4</td>
+            <td>47.0083850, 11.5085370</td>
+            <td>{{eta4_input}}</td>
+            <td class="myclass"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_Austria.svg" width="30" height="30"></td>
+         </tr>
+         <tr>
+            <td>Area 5</td>
+            <td>47.0143620, 11.5077130</td>
+            <td>{{eta5_input}}</td>
+            <td class="myclass"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_Austria.svg" width="30" height="30"></td>
+         </tr>
+         <tr>
+            <td>Area 6</td>
+            <td>47.0198840, 11.5050900</td>
+            <td>{{eta6_input}}</td>
+            <td class="myclass"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_Austria.svg" width="30" height="30"></td>
+         </tr>
+      </table>
+
+      <table id="bsaf_elements">
+         <tr>
+            <th style="text-align:center">Human Machine Interface</th>
+            <th style="text-align:center">Warning</th>
+            
+         </tr>
+         <tr>
+            <td>Area 1</td>
+            <td style="text-align:center">EmV approaching in {{eta1_input}}s</td>
+         </tr>
+         <tr>
+            <td>Area 2</td>
+            <td style="text-align:center">EmV approaching in {{eta2_input}}s</td>
+         </tr>
+         <tr>
+            <td>Area 3</td>
+            <td style="text-align:center">EmV approaching in {{eta3_input}}s</td>
+         </tr>
+      </table>
+
+   </body>
+</html>

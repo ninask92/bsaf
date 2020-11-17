@@ -1,0 +1,176 @@
+<html>
+    <head>
+        <title></title>
+        <script src="http://openlayers.org/api/OpenLayers.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            var lat=47.0199;
+            var lon=11.5039;
+            var zoom=15;
+            var map;
+            var mapCentered = false;
+ 
+            function init(){
+                map = new OpenLayers.Map ("map", {
+                controls:[
+                    new OpenLayers.Control.Navigation(),
+                    new OpenLayers.Control.PanZoomBar(),
+                    new OpenLayers.Control.LayerSwitcher(),
+                    new OpenLayers.Control.Attribution()],
+                    maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
+                    maxResolution: 156543.0399,
+                    numZoomLevels: 19,
+                    units: 'm',
+                    projection: new OpenLayers.Projection("EPSG:900913"),
+                    displayProjection: new OpenLayers.Projection("EPSG:4326")
+                } );
+ 
+                
+                map.addLayer(new OpenLayers.Layer.OSM());
+                //map.setCenter(new OpenLayers.LonLat(0, 0), 0);
+ 
+                /// Initial center before first marker load
+                var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), 
+                    new OpenLayers.Projection("EPSG:900913"));
+                map.setCenter(lonLat, zoom);
+
+                var circleStyle = new OpenLayers.StyleMap({'strokeWidth': 0, 'fillColor': "#007fff", "fillOpacity": 0.35});
+                var circleStyle1 = new OpenLayers.StyleMap({'strokeWidth': 0, 'fillColor': "#EF3340", "fillOpacity": 0.35});
+                var circleLayer = new OpenLayers.Layer.Vector("Route Layer", {styleMap: circleStyle});
+                var circleLayer1 = new OpenLayers.Layer.Vector("Route Layer", {styleMap: circleStyle1});
+                map.addLayer(circleLayer);
+                map.addLayer(circleLayer1);
+
+                var markers = new OpenLayers.Layer.Markers( "Markers" );
+                map.addLayer(markers);
+                var size = new OpenLayers.Size(70,70);
+                var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+                //var icon = new OpenLayers.Icon('https://www.flaticon.com/svg/static/icons/svg/75/75782.svg',size,offset);
+                var icon = new OpenLayers.Icon('https://svgshare.com/i/Qme.svg',size,offset);
+
+                const carPosition = {lat: null, lon: null};
+
+                function setMarker(lat, lon) {
+                    const markerCoordinates = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+                    markers.addMarker(new OpenLayers.Marker(markerCoordinates,icon));
+
+                    if (!mapCentered) {
+                        map.setCenter(markerCoordinates, zoom);
+                        mapCentered = true;
+                    }
+                }
+
+
+                function loadLocation() {
+                    /*
+                    const data = {
+                      "latitude": 47.0214200, 
+                      "longitude": 11.5025560
+                    };
+                    */
+
+                    $.get("http://195.37.154.70:31135/api/v1/state/location", function(data, status){
+                   // $.get("http://193.190.127.250:5000/api/v1/state/location", function(data, status){
+                        if (data && data.latitude && data.longitude) {
+                            setMarker(data.latitude, data.longitude);
+
+
+                            const carCoordinates = {lat: data.latitude, lon: data.longitude};
+                            loadCircles(carCoordinates);
+                        }
+                    });
+                }
+
+                function setCircle(lat, lon) {
+                    const circleCenter = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+                    var pCenter = new OpenLayers.Geometry.Point(circleCenter.lon, circleCenter.lat);
+                    var circle = OpenLayers.Geometry.Polygon.createRegularPolygon(pCenter, 500, 50, 0);
+                    var circleFeature = new OpenLayers.Feature.Vector(circle);
+                    circleLayer.addFeatures([circleFeature]);
+                }
+
+
+                function setCircle1(lat, lon) {
+                    const circleCenter = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+                    var pCenter = new OpenLayers.Geometry.Point(circleCenter.lon, circleCenter.lat);
+                    var circle = OpenLayers.Geometry.Polygon.createRegularPolygon(pCenter, 500, 50, 0);
+                    var circleFeature = new OpenLayers.Feature.Vector(circle);
+                    circleLayer1.addFeatures([circleFeature]);
+                }
+                function loadCircles(carCoordinates) {
+                    circleLayer.destroyFeatures();
+                    circleLayer1.destroyFeatures();
+
+                    const staticCircles = [
+                        {
+                            lat: 46.9917970, 
+                            lon: 11.4989080
+                        },
+
+                        {
+                            lat: 46.9969320, 
+                            lon: 11.5030600  
+                        },
+                        {
+                            lat: 47.0022330, 
+                            lon: 11.5070870
+                        },
+                        ];
+                    const staticCircles1 = [
+
+                        {
+                            lat: 47.0083850, 
+                            lon: 11.5085370
+                        },
+                        {
+                            lat: 47.0143620, 
+                            lon: 11.5077130
+                        },
+                        {
+                            lat: 47.0198840, 
+                            lon: 11.5050900
+                        },
+                    ];
+
+                    let centreLatDistance = 0;
+                    staticCircles.forEach((circle, circleIndex) => {
+                        if (staticCircles[circleIndex + 1]) {
+                            centreLatDistance = (staticCircles[circleIndex].lat - staticCircles[circleIndex + 1].lat) / 2;
+                        }
+
+                        if (carCoordinates.lat < circle.lat - centreLatDistance) {
+                            if (carCoordinates.lat!=47.0220269 && carCoordinates.lon!=11.5023193){
+                            setCircle(circle.lat, circle.lon);
+                        }
+                        }
+                    });
+                    staticCircles1.forEach((circle, circleIndex) => {
+                        if (staticCircles1[circleIndex + 1]) {
+                            centreLatDistance = (staticCircles1[circleIndex].lat - staticCircles1[circleIndex + 1].lat) / 2;
+                        }
+
+                        if (carCoordinates.lat < circle.lat - centreLatDistance) {
+                            if (carCoordinates.lat!=47.0220269 && carCoordinates.lon!=11.5023193){
+                            setCircle1(circle.lat, circle.lon);
+                        }
+                        }
+                    });
+                }
+            
+                $(document).ready(function() {
+                    setInterval(function(){
+                        loadLocation();
+                    }, 1000);
+                    loadLocation();
+                });
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="map" class="smallmap"></div>
+        </div>
+    </body>
+</html>
+
+
+
