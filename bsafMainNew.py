@@ -15,8 +15,8 @@ import json
 import ijson
 import shapely
 
-def bsaf_main():
-     with open('/home/dockerized/vanetza-v1/build/bin/CAMv2.json') as json_file:
+def bsaf_main(path, id):
+     with open(path) as json_file:
          data = json.load(json_file)
 
      #print("File was modified! Reloading it...")
@@ -417,7 +417,7 @@ def bsaf_main():
      area5 = [47.0143620, 11.5077130]
      area6 = [47.0198840, 11.5050900]
 
-     eta_json  = {"data":[{"id": 1,"eta": etas[0],"area_latitude": area1[0], "area_longitude": area1[1]},{"id":2,"eta":etas[1],"area_latitude": area2[0], "area_longitude": area2[1]},{"id": 3,"eta": etas[2], "area_latitude": area3[0], "area_longitude": area3[1]},{"id": 4,"eta": etas[3],"area_latitude": area4[0], "area_longitude": area4[1]},{"id": 5,"eta": etas[4],"area_latitude": area5[0], "area_longitude": area5[1]},{"id": 6,"eta": etas[5],"area_latitude": area6[0], "area_longitude": area6[1]}]}
+     eta_json  = {"data":[{"emv_id": id, "area_id": 1,"eta": etas[0],"area_latitude": area1[0], "area_longitude": area1[1]},{"emv_id": id, "area_id":2,"eta":etas[1],"area_latitude": area2[0], "area_longitude": area2[1]},{"emv_id": id, "area_id": 3,"eta": etas[2], "area_latitude": area3[0], "area_longitude": area3[1]},{"emv_id": id, "area_id": 4,"eta": etas[3],"area_latitude": area4[0], "area_longitude": area4[1]},{"emv_id": id, "area_id": 5,"eta": etas[4],"area_latitude": area5[0], "area_longitude": area5[1]},{"emv_id": id, "area_id": 6,"eta": etas[5],"area_latitude": area6[0], "area_longitude": area6[1]}]}
 
      #print(ETA_0, ETA_1, ETA_2, ETA_3, ETA_4, ETA_5 )
      #print(Dis0, Dis1, Dis2, Dis3, Dis4, Dis5)

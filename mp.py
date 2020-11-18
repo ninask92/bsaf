@@ -77,7 +77,7 @@ def createInput(longitude, latitude, speed, destination_longitude, destination_l
 
 
 
-def createAvro():
+def createAvro(emv_id):
 #while True:
 	#r1 =requests.get("http://217.77.85.130:31125/api/v1/appmanager/namespaces/helm-sandbox/apps/test") 
 	#monitoring_input = requests.get("http://193.190.127.200:5000/api/v1/resources/nodes")
@@ -92,15 +92,16 @@ def createAvro():
 	cur = conn.cursor()
 
 	all_etas = cur.execute('SELECT * FROM eta;').fetchall()
-	etas = [all_etas[0]["eta"],all_etas[1]["eta"],all_etas[2]["eta"],all_etas[3]["eta"],all_etas[4]["eta"],all_etas[5]["eta"]]
+	holder = emv_id - 1
+	etas = [all_etas[1 + 6*holder]["eta"],all_etas[0 + 6*holder]["eta"],all_etas[2 + 6*holder]["eta"],all_etas[3 + 6*holder]["eta"],all_etas[4 + 6*holder]["eta"],all_etas[5 + 6*holder]["eta"]]
 	#dissemination_areas = [all_etas[0]["dissemination_area"],all_etas[1]["dissemination_area"],all_etas[2]["dissemination_area"],all_etas[3]["dissemination_area"],all_etas[4]["dissemination_area"],all_etas[5]["dissemination_area"]]
 
 	current_state = cur.execute('SELECT * FROM state;').fetchall()
-	speed = current_state[0]["speed"]
-	location_longitude = current_state[0]["location_longitude"]
-	location_latitude = current_state[0]["location_latitude"]
-	destination_latitude = current_state[0]["destination_longitude"]
-	destination_longitude = current_state[0]["destination_latitude"]
+	speed = current_state[emv_id-1]["speed"]
+	location_longitude = current_state[emv_id-1]["location_longitude"]
+	location_latitude = current_state[emv_id-1]["location_latitude"]
+	destination_latitude = current_state[emv_id-1]["destination_longitude"]
+	destination_longitude = current_state[emv_id-1]["destination_latitude"]
 
 	#input_encoder = createInput(1, 1, 1, 1, 1, etas, dissemination_areas)
 
@@ -142,12 +143,12 @@ def createAvro():
 	disseminationAreas = disseminationAreas.json()
 	#print(disseminationAreas)
 	
-	data_1 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message1},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[0]["area_latitude"]*100000,"longitude": disseminationAreas[0]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
-	data_2 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message2},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[1]["area_latitude"]*100000,"longitude": disseminationAreas[1]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
-	data_3 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message3},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[2]["area_latitude"]*100000,"longitude": disseminationAreas[2]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
-	data_4 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message4},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[3]["area_latitude"]*100000,"longitude": disseminationAreas[3]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
-	data_5 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message5},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[4]["area_latitude"]*100000,"longitude": disseminationAreas[4]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
-	data_6 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message6},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[5]["area_latitude"]*100000,"longitude": disseminationAreas[5]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
+	data_1 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message1},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[1+ 6*holder]["area_latitude"]*100000,"longitude": disseminationAreas[0+ 6*holder]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
+	data_2 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message2},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[0+ 6*holder]["area_latitude"]*100000,"longitude": disseminationAreas[1+ 6*holder]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
+	data_3 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message3},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[2+ 6*holder]["area_latitude"]*100000,"longitude": disseminationAreas[2+ 6*holder]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
+	data_4 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message4},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[3+ 6*holder]["area_latitude"]*100000,"longitude": disseminationAreas[3+ 6*holder]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
+	data_5 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message5},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[4+ 6*holder]["area_latitude"]*100000,"longitude": disseminationAreas[4+ 6*holder]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
+	data_6 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": message6},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":None,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude": disseminationAreas[5+ 6*holder]["area_latitude"]*100000,"longitude": disseminationAreas[5+ 6*holder]["area_longitude"]*100000,"semiMajorAxis":500,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
 	
 	endpoint = "http://80.159.227.35:8082/topics/MESSAGE_AVRO_DATA"
 	headers = {'Content-Type': 'application/vnd.kafka.avro.v2+json','Accept': 'application/vnd.kafka.v2+json'}
@@ -177,8 +178,6 @@ def createAvro():
 	#print(ts_readable)
 	#time.sleep(5)
 #createAvro()
-
-
 
 
 
