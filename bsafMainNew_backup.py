@@ -14,10 +14,8 @@ import requests
 import json
 import ijson
 import shapely
-import time
 
 def bsaf_main(path, id):
-     start_time = time.time()
      with open(path) as json_file:
          data = json.load(json_file)
 
@@ -430,18 +428,11 @@ def bsaf_main(path, id):
      #r1 = requests.put("http://localhost:5000/api/v1/state/speed", json=speed_json)
      #r3 = requests.put("http://localhost:5000/api/v1/state/emvid", json=emvID)
      #r4 = requests.put("http://localhost:5000/api/v1/state/destination", json=destination)
-
-     #r5 = requests.put("http://localhost:5000/api/v1/eta", json=eta_json)
-
+     r5 = requests.put("http://localhost:5000/api/v1/eta", json=eta_json)
      #print(location)
      #print(speed)
      #print(destination)
      #print(eta_json)
-
-
-     duration = time.time() - start_time
-     print("Duration of ETA calculation: ", duration)
-     return etas
 
 
 
