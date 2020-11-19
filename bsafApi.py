@@ -97,6 +97,29 @@ def add_state():
     return jsonify(current_state)
 
 
+@app.route('/api/v1/state', methods=['DELETE'])
+def delete_state():
+
+    data = request.json
+
+    emvid = data["emvid"]
+
+    conn = sqlite3.connect('domainAdb.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+
+    
+    sql = """DELETE from state where emvID = ?"""
+    val = (emvid)
+
+    cur.execute(sql,val)
+    conn.commit()
+    
+    current_state = cur.execute('SELECT * FROM state;').fetchall()
+
+    return jsonify(current_state)
+
+
 
 @app.route('/api/v1/eta', methods=['GET'])
 def eta_state():
@@ -146,28 +169,6 @@ def update_speed():
 
     return jsonify(current_state)
 
-
-@app.route('/api/v1/state', methods=['DELETE'])
-def delete_state():
-
-    data = request.json
-
-    emvid = data["emvid"]
-
-    conn = sqlite3.connect('domainAdb.db')
-    conn.row_factory = dict_factory
-    cur = conn.cursor()
-
-    
-    sql = """DELETE from state where emvID = ?"""
-    val = (emvid)
-
-    cur.execute(sql,val)
-    conn.commit()
-    
-    current_state = cur.execute('SELECT * FROM state;').fetchall()
-
-    return jsonify(current_state)
 
 
 @app.route('/api/v1/state/location', methods=['GET'])
@@ -410,6 +411,7 @@ def add_eta():
     records = cur.fetchall()
     numRecords = len(records)
     numRecords = numRecords/6
+    numRecords = numRecords + 1
 
     sql = "INSERT INTO eta  (area_id, area_latitude, area_longitude, emv_id, eta) VALUES (?, ?, ?, ?, ?)"
     val = (1, 0, 0, numRecords, 0)
