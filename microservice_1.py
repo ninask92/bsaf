@@ -96,7 +96,7 @@ def execute(emv_id, destination):
 				#print(ts_readable)
 				duration = time.time() - start_time
 				print(duration)
-				time.sleep(1)
+				time.sleep(0.1)
 
 
 
