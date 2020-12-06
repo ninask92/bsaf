@@ -38,18 +38,22 @@ def createInput(id, longitude, latitude, speed, destination_longitude, destinati
 
 
 
-def execute(emv_id):
+def execute(emv_id, destination):
 	lon = []
 	lat = []
 	id = {"id": emv_id}
 
-	destination = requests.get("http://localhost:5000/api/v1/state/destination", json=id)
-	destination = destination.json()
+	#destination = requests.get("http://localhost:5000/api/v1/state/destination", json=id)
+	#destination = destination.json()
 	destination_latitude = destination["latitude"]
 	destination_longitude = destination["longitude"]
 
+	destination = {"destination_longitude": destination_longitude, "destination_latitude": destination_latitude}
+
 	lat_previous = 46.98896020
 	lon_previous = 11.49748240
+
+	#fixed dissemination areas
 	area1 = [46.9917970, 11.4989080]
 	area2 = [46.9969320, 11.5030600]
 	area3 = [47.0022330, 11.5070870]
@@ -57,7 +61,7 @@ def execute(emv_id):
 	area5 = [47.0143620, 11.5077130]
 	area6 = [47.0198840, 11.5050900]
 
-
+	disseminationAreas = [area1, area2, area3, area4, area5, area6]
 
 	gpx_file = open('map_new.gpx', 'r', encoding="utf-8")  # Data from the E313 highway
 	gpx = gpxpy.parse(gpx_file)               # this will read all data points from .gpx file
@@ -67,8 +71,10 @@ def execute(emv_id):
 				start_time = time.time()
 				lat_current = point.latitude
 				lon_current = point.longitude
-				location = {"id": emv_id, "longitude": lon_current, "latitude": lat_current}
-				r = requests.put("http://localhost:5000/api/v1/state/location", json=location)
+				#location = {"id": emv_id, "longitude": lon_current, "latitude": lat_current}
+				location = {"location_longitude": lon_current, "location_latitude": lat_current}
+
+				#r = requests.put("http://localhost:5000/api/v1/state/location", json=location)
 				#drawMap(lat_current, lon_current)
 				coords_1 = (lat_previous, lon_previous)
 				coords_2 = (lat_current, lon_current)
@@ -78,18 +84,21 @@ def execute(emv_id):
 				lon.append(point.longitude)  #this will save all longitude points in an array
 				lat_previous = lat_current
 				lon_current = lon_current
-				testic = createInput(emv_id, point.longitude, point.latitude, 30, destination_longitude, destination_latitude)
+				speed = 30
+				testic = createInput(emv_id, point.longitude, point.latitude, speed, destination_longitude, destination_latitude)
 				main_path = '/home/dockerized/vanetza-v1/build/bin/'
 				addon = main_path + 'CAMv' + str(emv_id) + '.json'
-				bsaf_main(addon, emv_id)
-				#createAvro(emv_id)
+				etas = bsaf_main(addon, emv_id)
+				createAvro(emv_id, etas, location, destination, speed, disseminationAreas)
 				#time.sleep(t_current) #Adjust this to get the best performance
-				ts = time.time()
-				ts_readable = time.ctime(ts)
-				print(ts_readable)
+				#ts = time.time()
+				#ts_readable = time.ctime(ts)
+				#print(ts_readable)
 				duration = time.time() - start_time
 				print(duration)
 				time.sleep(0.1)
+
+
 
 
 
