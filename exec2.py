@@ -1,4 +1,5 @@
 import microservice
 from microservice import execute
 
-execute(2)
+destination = {"latitude": 47.02202690, "longitude": 11.50231930}
+execute(2, destination)
