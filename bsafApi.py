@@ -8,6 +8,7 @@ import sys
 import subprocess
 from subprocess import check_output
 #import bsaf_main
+import time
 
 
 app = flask.Flask(__name__)
@@ -41,27 +42,152 @@ def home():
     eta_5 = current_eta[4]["eta"]
     eta_6 = current_eta[5]["eta"]
 
-    #latitude1 = current_eta[0]["area_latitude"]
-    #latitude2 = current_eta[1]["area_latitude"]
-    #latitude3 = current_eta[2]["area_latitude"]
-    #latitude4 = current_eta[3]["area_latitude"]
-    #latitude5 = current_eta[4]["area_latitude"]
-    #latitude6 = current_eta[5]["area_latitude"]
 
-    #longitude1 = current_eta[0]["area_longitude"]
-    #longitude2 = current_eta[1]["area_longitude"]
-    #longitude3 = current_eta[2]["area_longitude"]
-    #longitude4 = current_eta[3]["area_longitude"]
-    #longitude5 = current_eta[4]["area_longitude"]
-    #longitude6 = current_eta[5]["area_longitude"]
-
-
-    return render_template('test1.html', speed_input = speed, location_latitude_input = location_latitude, location_longitude_input = location_longitude, destination_latitude_input = destination_latitude, destination_longitude_input = destination_longitude, eta1_input = eta_1, eta2_input = eta_2, eta3_input = eta_3, eta4_input = eta_4, eta5_input = eta_5, eta6_input = eta_6)
+    return render_template('test1.html', speed_input = speed, location_latitude_input = location_latitude, location_longitude_input = location_longitude, destination_latitude_input = destination_latitude, destination_longitude_input = destination_longitude, eta1_input = eta_2, eta2_input = eta_1, eta3_input = eta_3, eta4_input = eta_4, eta5_input = eta_5, eta6_input = eta_6)
 
 
 @app.route('/map', methods=['GET'])
 def map():
     return render_template('map.html')
+
+
+@app.route('/results', methods=['GET'])
+def results():
+    conn = sqlite3.connect('domainAdb.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+
+    current_state = cur.execute('SELECT * FROM results;').fetchall()
+    computingDelay = current_state[0]['computingDelay']
+    cpu = current_state[0]['cpu']
+    etaDelay = current_state[0]['etaDelay']
+    instanceID = current_state[0]['instanceID']
+    ram = current_state[0]['ram']
+    stateDelay = current_state[0]['stateDelay']
+
+    return render_template('resultsDashboard.html', computingDelay = computingDelay, cpu = cpu, etaDelay = etaDelay, instanceID = instanceID, ram = ram, stateDelay = stateDelay)
+
+
+@app.route('/api/v1/results/computingDelay', methods=['PUT'])
+def update_computingDelay():
+    data = request.json
+    #r = requests.put("http://195.37.154.72:31135/api/v1/state/speed", json=data)
+    #r = requests.put("http://193.190.127.200:5000/api/v1/state/speed", json=data)
+    #r = requests.put("http://143.129.82.74:5000/api/v1/state/speed", json=data)
+    computingDelay = data["computingDelay"]
+    id = data["instanceID"]
+
+    conn = sqlite3.connect('domainAdb.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+
+    sql = "UPDATE results SET computingDelay = ? WHERE instanceID = ?"
+    val = (computingDelay, id)
+
+    cur.execute(sql,val)
+    conn.commit()
+
+    current_results = cur.execute('SELECT * FROM results;').fetchall()
+
+    return jsonify(current_results)
+
+
+
+@app.route('/api/v1/results/etaDelay', methods=['PUT'])
+def update_etaDelay():
+    data = request.json
+    #r = requests.put("http://195.37.154.72:31135/api/v1/state/speed", json=data)
+    #r = requests.put("http://193.190.127.200:5000/api/v1/state/speed", json=data)
+    #r = requests.put("http://143.129.82.74:5000/api/v1/state/speed", json=data)
+    etaDelay = data["etaDelay"]
+    id = data["instanceID"]
+
+    conn = sqlite3.connect('domainAdb.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+
+    sql = "UPDATE results SET etaDelay = ? WHERE instanceID = ?"
+    val = (etaDelay, id)
+
+    cur.execute(sql,val)
+    conn.commit()
+
+    current_results = cur.execute('SELECT * FROM results;').fetchall()
+
+    return jsonify(current_results)
+
+
+@app.route('/api/v1/results/stateDelay', methods=['PUT'])
+def update_stateDelay():
+    data = request.json
+    #r = requests.put("http://195.37.154.72:31135/api/v1/state/speed", json=data)
+    #r = requests.put("http://193.190.127.200:5000/api/v1/state/speed", json=data)
+    #r = requests.put("http://143.129.82.74:5000/api/v1/state/speed", json=data)
+    stateDelay = data["stateDelay"]
+    id = data["instanceID"]
+
+    conn = sqlite3.connect('domainAdb.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+
+    sql = "UPDATE results SET stateDelay = ? WHERE instanceID = ?"
+    val = (stateDelay, id)
+
+    cur.execute(sql,val)
+    conn.commit()
+
+    current_results = cur.execute('SELECT * FROM results;').fetchall()
+
+    return jsonify(current_results)
+
+@app.route('/api/v1/results/cpu', methods=['PUT'])
+def update_cpu():
+    data = request.json
+    #r = requests.put("http://195.37.154.72:31135/api/v1/state/speed", json=data)
+    #r = requests.put("http://193.190.127.200:5000/api/v1/state/speed", json=data)
+    #r = requests.put("http://143.129.82.74:5000/api/v1/state/speed", json=data)
+    cpu = data["cpu"]
+    id = data["instanceID"]
+
+    conn = sqlite3.connect('domainAdb.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+
+    sql = "UPDATE results SET cpu = ? WHERE instanceID = ?"
+    val = (cpu, id)
+
+    cur.execute(sql,val)
+    conn.commit()
+
+    current_results = cur.execute('SELECT * FROM results;').fetchall()
+
+    return jsonify(current_results)
+
+
+@app.route('/api/v1/results/ram', methods=['PUT'])
+def update_ram():
+    data = request.json
+    #r = requests.put("http://195.37.154.72:31135/api/v1/state/speed", json=data)
+    #r = requests.put("http://193.190.127.200:5000/api/v1/state/speed", json=data)
+    #r = requests.put("http://143.129.82.74:5000/api/v1/state/speed", json=data)
+    ram = data["ram"]
+    id = data["instanceID"]
+
+    conn = sqlite3.connect('domainAdb.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+
+    sql = "UPDATE results SET ram = ? WHERE instanceID = ?"
+    val = (ram, id)
+
+    cur.execute(sql,val)
+    conn.commit()
+
+    current_results = cur.execute('SELECT * FROM results;').fetchall()
+
+    return jsonify(current_results)
+
+
 
 @app.route('/api/v1/state', methods=['GET'])
 def state():
@@ -131,6 +257,16 @@ def eta_state():
     return jsonify(current_state)
 
 
+@app.route('/api/v1/results', methods=['GET'])
+def get_results():
+    conn = sqlite3.connect('domainAdb.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+    current_results = cur.execute('SELECT * FROM results;').fetchall()
+
+    return jsonify(current_results)
+
+
 #gets node, decision on placement
 @app.route('/api/v1/state/speed', methods=['GET'])
 def speed():
@@ -151,6 +287,7 @@ def update_speed():
     data = request.json
     #r = requests.put("http://195.37.154.72:31135/api/v1/state/speed", json=data)
     #r = requests.put("http://193.190.127.200:5000/api/v1/state/speed", json=data)
+    #r = requests.put("http://143.129.82.74:5000/api/v1/state/speed", json=data)
     query = "SELECT * FROM state WHERE"
     speed = data["speed"]
     id = data["id"]
@@ -177,8 +314,8 @@ def location():
     conn = sqlite3.connect('domainAdb.db')
     conn.row_factory = dict_factory
     cur = conn.cursor()
-    data = request.json
-    id = data["id"]-1
+    #data = request.json
+    id = 0
 
     current_state = cur.execute('SELECT * FROM state;').fetchall()
     longitude = current_state[id]["location_longitude"]
@@ -190,16 +327,29 @@ def location():
 @app.route('/api/v1/state/location', methods=['PUT'])
 def update_location():
     data = request.json
-    #r = requests.put("http://195.37.154.72:31135/api/v1/state/location", json=data)
-    #r = requests.put("http://193.190.127.200:5000/api/v1/state/location", json=data)
-    query = "SELECT * FROM state WHERE"
-    longitude = data["longitude"]
-    latitude = data["latitude"]
-    id = data["id"]
-
     conn = sqlite3.connect('domainAdb.db')
     conn.row_factory = dict_factory
     cur = conn.cursor()
+    #r = requests.put("http://195.37.154.72:31135/api/v1/state/location", json=data)
+    #r = requests.put("http://193.190.127.200:5000/api/v1/state/location", json=data)
+    start = time.clock()
+    #r = requests.put("http://143.129.82.74:5000/api/v1/state/location", json=data)
+    request_time = time.clock() - start
+    with open('location.txt', 'a') as f:
+            f.write(str(request_time))
+            f.write('\n')
+
+    sql = "UPDATE results SET stateDelay = ? WHERE instanceID = ?"
+    val = (request_time, 1)
+
+    cur.execute(sql,val)
+    conn.commit()
+
+
+    query = "SELECT * FROM state WHERE"
+    longitude = data["location_longitude"]
+    latitude = data["location_latitude"]
+    id = data["id"]
 
     sql = "UPDATE state SET location_longitude = ? WHERE emvID = ?"
     val = (longitude, id)
@@ -238,6 +388,7 @@ def update_destination():
     data = request.json
     #r = requests.put("http://195.37.154.72:31135/api/v1/state/destination", json=data)
     #r = requests.put("http://193.190.127.200:500/api/v1/state/destination", json=data)
+    #r = requests.put("http://143.129.82.74:5000/api/v1/state/destination", json=data)
     query = "SELECT * FROM state WHERE"
     longitude = data["longitude"]
     latitude = data["latitude"]
@@ -267,6 +418,7 @@ def update_destination():
 def update_eta():
     #r = requests.put("http://195.37.154.72:31135/api/v1/eta", json=data)
     #r = requests.put("http://193.190.127.252:5000/api/v1/eta", json=data)
+    #r = requests.put("http://143.129.82.74:5000/api/v1/state/speed", json=data)
     data = request.json
     query = "SELECT * FROM eta WHERE"
     #etas = [data["data"][0]["eta"],eta_json["data"][1]["eta"],eta_json["data"][2]["eta"],eta_json["data"][3]["eta"],eta_json["data"][4]["eta"],eta_json["data"][5]["eta"]]
@@ -507,7 +659,6 @@ def delete_eta():
     current_state = cur.execute('SELECT * FROM eta;').fetchall()
 
     return jsonify(current_state)
-
 
 app.run(host= '0.0.0.0')
 

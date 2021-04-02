@@ -408,7 +408,7 @@ def bsaf_main(path, id):
      for i in range(0, len(etas)):
        if etas[i]<1 and etas[i]!=0:
          etas[i] = 1
-     print(etas)
+     
      #etas = [ETA_0, ETA_1, ETA_2, ETA_3, ETA_4, ETA_5]
      #areas = [Dis0, Dis1, Dis2, Dis3, Dis4, Dis5]
 
@@ -424,14 +424,21 @@ def bsaf_main(path, id):
      #print(ETA_0, ETA_1, ETA_2, ETA_3, ETA_4, ETA_5 )
      #print(Dis0, Dis1, Dis2, Dis3, Dis4, Dis5)
 
-     speed_json  = {"speed": speed}
-     location = {"longitude": lon_e, "latitude": lat_e}
+     speed_json  = {"id": id, "speed": speed}
+     destination_lat = destination["latitude"]
+     destination_lon = destination["longitude"]
+
+     destination = {"id": id, "longitude": destination_lon, "latitude": destination_lat}
+     #location = {"id": id, "longitude": lon_e, "latitude": lat_e}
      #r2 = requests.put("http://localhost:5000/api/v1/state/location", json=location)
      #r1 = requests.put("http://localhost:5000/api/v1/state/speed", json=speed_json)
      #r3 = requests.put("http://localhost:5000/api/v1/state/emvid", json=emvID)
      #r4 = requests.put("http://localhost:5000/api/v1/state/destination", json=destination)
 
-     #r5 = requests.put("http://localhost:5000/api/v1/eta", json=eta_json)
+     r5 = requests.put("http://localhost:5000/api/v1/eta", json=eta_json)
+     print("\n")
+     print("ETA values for six dissemination areas:")
+     print(etas)
 
      #print(location)
      #print(speed)
@@ -441,6 +448,8 @@ def bsaf_main(path, id):
 
      duration = time.time() - start_time
      print("Duration of ETA calculation: ", duration)
+     etaDelay_json = {"instanceID": 1, "etaDelay": duration}
+     r6 = requests.put("http://localhost:5000/api/v1/results/etaDelay", json=etaDelay_json)
      return etas
 
 

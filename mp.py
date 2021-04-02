@@ -140,6 +140,16 @@ def createAvro(emv_id, etas, location, destination, speed, disseminationAreas):
 	#data_4 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": encode_output["BSAF_PDUS"][3]["PDU"]},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":0,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude":input_encoder["BSAF_out"][3]["dissemination_area"],"longitude":0,"semiMajorAxis":0,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
 	#data_5 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": encode_output["BSAF_PDUS"][4]["PDU"]},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":0,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude":input_encoder["BSAF_out"][4]["dissemination_area"],"longitude":0,"semiMajorAxis":0,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
 	#data_6 = {"value_schema_id": 41,"records":[{"value":{"pdu":{"bytes": encode_output["BSAF_PDUS"][5]["PDU"]},"appRequestType":"AppMessage_trigger","messageId":{"com.nokia.messageAPI.uniqueId":{"applicationId":"APP_ID-428952369","sequenceNumber": 1}},"repetitionInterval":{"int":0},"repetitionDuration":{"int":0},"validityDuration":{"int":0},"referenceTime":0,"disseminationArea":{"com.nokia.messageAPI.geoArea":{"area":"CIRCLE","latitude":input_encoder["BSAF_out"][5]["dissemination_area"],"longitude":0,"semiMajorAxis":0,"semiMinorAxis":0,"azimuthAngle":0}}}}]}
+	#encode_output = input_encoder
+	#without encoding
+	#message1 = str(encode_output["BSAF_OUT"][0]["ETA"])
+	#message2 = str(encode_output["BSAF_OUT"][1]["ETA"])
+	#message3 = str(encode_output["BSAF_OUT"][2]["ETA"])
+	#message4 = str(encode_output["BSAF_OUT"][3]["ETA"])
+	#message5 = str(encode_output["BSAF_OUT"][4]["ETA"])
+	#message6 = str(encode_output["BSAF_OUT"][5]["ETA"])
+
+	#new when include encoding
 	message1 = str(encode_output["BSAF_PDUS"][0]["PDU"])
 	message2 = str(encode_output["BSAF_PDUS"][1]["PDU"])
 	message3 = str(encode_output["BSAF_PDUS"][2]["PDU"])
@@ -170,6 +180,8 @@ def createAvro(emv_id, etas, location, destination, speed, disseminationAreas):
 	#print(data_1)
 	#print(data_2)
 	#print(data_3)
+	print("\n")
+	print("Avro messages for dissemination areas 4, 5, and 6 (Austria):")
 	print(data_4)
 	print(data_5)
 	print(data_6)

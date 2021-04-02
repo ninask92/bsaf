@@ -69,8 +69,8 @@
                     };
                     */
 
-                    $.get("http://195.37.154.70:31135/api/v1/state/location", function(data, status){
-                   // $.get("http://193.190.127.250:5000/api/v1/state/location", function(data, status){
+                    //$.get("http://195.37.154.70:31135/api/v1/state/location", function(data, status){
+                   $.get("http://localhost:5000/api/v1/state/location", function(data, status){
                         if (data && data.latitude && data.longitude) {
                             setMarker(data.latitude, data.longitude);
 
@@ -171,6 +171,3 @@
         </div>
     </body>
 </html>
-
-
-

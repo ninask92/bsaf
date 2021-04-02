@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+   <head>
+      <title>BSAF app</title>
+      <meta http-equiv="refresh" content="1" >
+      <style>
+      #bsaf_elements {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+         }
+
+      #bsaf_elements td, #bsaf_elements th {
+      border: 1px solid #ddd;
+      padding: 8px;
+      }
+
+      #bsaf_elements tr:nth-child(even){background-color: #d9e4dd;}
+
+      #bsaf_elements tr:hover {background-color: #ddd;}
+
+      #bsaf_elements th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #1c2b2d;
+      color: white;
+         }
+
+      .centerImage {
+         display: block;
+         margin-left: auto;
+         margin-right: auto;
+      }
+      .myclass {
+  width: 20%;
+  white-space: nowrap;
+margin-left: auto;
+         margin-right: auto;
+         text-align: center;
+}
+      table {
+border-collapse: collapse;
+border: 1px solid gray;
+width: 50%;
+float: left;
+margin:5px;
+}
+      </style>
+   </head>
+
+   <body>
+       <center><img src="https://svgur.com/i/R1z.svg" class="center" width="500"></center>
+      <table border = "1">
+            <table id="bsaf_elements">
+         <tr>
+            <th style="text-align:center">Application instance ID</th>
+            <th style="text-align:center">Key Performance Indicator</th>
+            <th style="text-align:center">Value</th>
+         </tr>
+         <tr>
+            <td>{{instanceID}}</td>
+            <td>Computing delay (s)</td>
+            <td>{{computingDelay}}</td>
+         </tr>
+         <tr>
+            <td>{{instanceID}}</td>
+            <td>ETA calculation delay (s)</td>
+            <td>{{etaDelay}}</td>
+         </tr>
+         <tr>
+            <td>{{instanceID}}</td>
+            <td>State update delay (s)</td>
+            <td>{{stateDelay}}</td>
+         </tr>
+         <tr>
+            <td>{{instanceID}}</td>
+            <td>CPU (%)</td>
+            <td>{{cpu}}</td>
+         </tr>
+         <tr>
+            <td>{{instanceID}}</td>
+            <td>RAM (%)</td>
+            <td>{{ram}}</td>
+         </tr>
+      </table>
+
+   </body>
+</html>
